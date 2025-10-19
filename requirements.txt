@@ -1,0 +1,3 @@
+# SQL Query Optimization Tutorial
+# Python 내장 라이브러리만 사용 (sqlite3)
+# Python 3.7 이상 필요

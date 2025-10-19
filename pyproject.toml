@@ -1,0 +1,16 @@
+[project]
+name = "sql101"
+version = "0.1.0"
+description = "SQL Query Optimization Hands-on Tutorial - 복잡하고 비효율적인 SQL 쿼리 분석 및 최적화 실습"
+readme = "README.md"
+requires-python = ">=3.8"
+authors = [
+    { name = "SQL101 Tutorial" }
+]
+dependencies = []
+
+[tool.uv]
+dev-dependencies = []
+
+# 패키지 설치 없이 스크립트만 실행하는 프로젝트
+package = false
