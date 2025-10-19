@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """
+
 Problem 4: 인덱스 없이 대용량 데이터 조회
 
 문제점:
@@ -11,7 +12,11 @@ Problem 4: 인덱스 없이 대용량 데이터 조회
 - JOIN 키, WHERE 조건, ORDER BY 컬럼에 인덱스
 """
 
-from sql_utils import get_connection, timer, print_header
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
+from utils.sql_utils import get_connection, timer, print_header
 
 
 def create_indexes(conn):
@@ -71,7 +76,7 @@ def show_indexes(conn):
 def main():
     print_header("Problem 4: 인덱스 생성으로 성능 최적화")
 
-    conn = get_connection()
+    conn = get_connection("data/ecommerce.db")
 
     try:
         # 인덱스 생성 전 상태 확인

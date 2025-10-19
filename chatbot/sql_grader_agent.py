@@ -5,9 +5,15 @@ LangGraph를 사용한 SQL 쿼리 최적화 문제 출제 및 채점 시스템
 
 import sqlite3
 import time
+import sys
+from pathlib import Path
 from typing import TypedDict, Annotated, Literal
 from dataclasses import dataclass
-from sql_utils import get_connection, timer
+
+# Add parent directory to path for imports
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
+from utils.sql_utils import get_connection, timer
 
 
 @dataclass
@@ -37,7 +43,7 @@ class GraderState(TypedDict):
 class SQLGraderAgent:
     """SQL 쿼리 채점 에이전트"""
 
-    def __init__(self, db_name='ecommerce.db'):
+    def __init__(self, db_name='data/ecommerce.db'):
         self.db_name = db_name
         self.problems = self._load_problems()
 

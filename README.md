@@ -21,7 +21,7 @@ Gradio 기반 대화형 SQL 쿼리 최적화 챗봇을 사용하여 실시간 �
 
 ```bash
 # Gradio 챗봇 실행
-uv run python app.py
+uv run python chatbot/app.py
 
 # 브라우저에서 http://localhost:7860 접속
 ```
@@ -33,7 +33,7 @@ uv run python app.py
 - 💡 실시간 피드백 및 개선 팁
 - 🎯 정답 및 해설 제공
 
-👉 자세한 사용법은 [README_CHATBOT.md](README_CHATBOT.md)를 참고하세요!
+👉 자세한 사용법은 [chatbot/README.md](chatbot/README.md)를 참고하세요!
 
 ---
 
@@ -67,19 +67,14 @@ uv sync
 `uv sync` 명령은:
 - `.python-version` 파일에 지정된 Python 3.11을 자동으로 다운로드/설치
 - 가상환경 자동 생성 (`.venv`)
-- 의존성 설치 (이 프로젝트는 Python 내장 라이브러리만 사용)
+- 의존성 설치 (Gradio)
 
 ### 2. 샘플 데이터베이스 생성
 
 먼저 실습용 전자상거래 데이터베이스를 생성합니다:
 
 ```bash
-# 방법 1: uv run 사용 (권장)
-uv run python setup_database.py
-
-# 방법 2: 가상환경 활성화 후 실행
-source .venv/bin/activate  # Windows: .venv\Scripts\activate
-python setup_database.py
+uv run python data/setup_database.py
 ```
 
 생성되는 데이터:
@@ -89,96 +84,124 @@ python setup_database.py
 - 주문: 5,000건
 - 주문 상세: 약 15,000건
 
-### 3. 최적화 튜토리얼 실행
+👉 데이터베이스 스키마 상세 정보는 [data/README.md](data/README.md)를 참고하세요!
 
-각 Problem을 독립적으로 실행할 수 있습니다:
+### 3. 학습 방법 선택
+
+#### 방법 1: 대화형 챗봇 (권장) 🤖
+
+```bash
+uv run python chatbot/app.py
+# http://localhost:7860 접속
+```
+
+- 실시간 채점 및 피드백
+- 성능 점수 (100점 만점)
+- 단계별 힌트 제공
+
+#### 방법 2: 독립 스크립트 실행 📝
 
 ```bash
 # Problem 1: 불필요한 JOIN과 중복 서브쿼리
-uv run python problem_1_duplicate_joins.py
+uv run python problems/problem_1_duplicate_joins.py
 
-# Problem 2: 비효율적인 GROUP BY와 다중 LEFT JOIN
-uv run python problem_2_inefficient_groupby.py
+# Problem 2: 비효율적인 GROUP BY
+uv run python problems/problem_2_inefficient_groupby.py
 
-# Problem 3: 복잡한 중첩 서브쿼리와 잘못된 JOIN 순서
-uv run python problem_3_nested_subqueries.py
+# Problem 3: 중첩 서브쿼리
+uv run python problems/problem_3_nested_subqueries.py
 
-# Problem 4: 인덱스 생성으로 성능 최적화
-uv run python problem_4_create_indexes.py
+# Problem 4: 인덱스 생성
+uv run python problems/problem_4_create_indexes.py
 
-# Problem 5: 잘못된 OUTER JOIN 사용
-uv run python problem_5_outer_join.py
-
-# (선택) 전체 튜토리얼 한번에 실행
-uv run python sql_optimization_tutorial.py
+# Problem 5: 잘못된 OUTER JOIN
+uv run python problems/problem_5_outer_join.py
 ```
 
-또는 가상환경 활성화 후 실행:
+👉 Problem 스크립트 상세 정보는 [problems/README.md](problems/README.md)를 참고하세요!
 
-```bash
-source .venv/bin/activate  # Windows: .venv\Scripts\activate
-python problem_1_duplicate_joins.py
-# ... 나머지 문제들도 동일하게 실행
+## 📁 프로젝트 구조
+
 ```
+sql101/
+├── README.md                          # 이 파일
+├── pyproject.toml                     # uv 프로젝트 설정
+├── .python-version                    # Python 버전 (3.11)
+│
+├── data/                              # 📁 데이터베이스
+│   ├── README.md                      # DB 스키마 및 생성 가이드
+│   ├── setup_database.py              # DB 생성 스크립트
+│   └── ecommerce.db                   # SQLite 데이터베이스
+│
+├── problems/                          # 📁 독립 실행 가능한 Problem 스크립트
+│   ├── README.md                      # Problem 사용 가이드
+│   ├── problem_1_duplicate_joins.py   # Problem 1
+│   ├── problem_2_inefficient_groupby.py
+│   ├── problem_3_nested_subqueries.py
+│   ├── problem_4_create_indexes.py
+│   └── problem_5_outer_join.py
+│
+├── chatbot/                           # 📁 Gradio 챗봇
+│   ├── README.md                      # 챗봇 상세 가이드
+│   ├── DEMO.md                        # 사용 예시
+│   ├── app.py                         # Gradio UI
+│   └── sql_grader_agent.py            # 채점 엔진
+│
+└── utils/                             # 📁 공통 유틸리티
+    ├── README.md                      # 유틸리티 함수 문서
+    └── sql_utils.py                   # 공통 함수
+```
+
+### 디렉토리별 설명
+
+각 디렉토리는 독립적인 README.md를 포함하고 있습니다:
+
+- **[data/](data/)**: 데이터베이스 생성 및 스키마 정보
+- **[problems/](problems/)**: 개별 실행 가능한 최적화 문제
+- **[chatbot/](chatbot/)**: 대화형 학습 챗봇 애플리케이션
+- **[utils/](utils/)**: 공통 유틸리티 함수 모음
 
 ## 실습 구성
 
 ### Problem 1: 불필요한 JOIN과 중복 서브쿼리
-
-**비효율적인 쿼리 예시:**
-- 같은 테이블(`customers`, `regions`)을 두 번씩 JOIN
-- 동일한 서브쿼리를 여러 번 실행
-- `SELECT *`로 모든 컬럼 조회
-
-**최적화 방법:**
+**학습 목표:**
+- CTE(WITH 절) 활용
 - 중복 JOIN 제거
-- CTE(Common Table Expression)로 서브쿼리 재사용
-- 필요한 컬럼만 명시적으로 SELECT
+- 필요한 컬럼만 SELECT
 
-### Problem 2: 비효율적인 GROUP BY와 다중 LEFT JOIN
+**난이도:** ⭐⭐⭐
 
-**비효율적인 쿼리 예시:**
-- 불필요한 LEFT JOIN 사용 (실제로는 INNER JOIN이 적합)
-- 각 고객별로 서브쿼리를 반복 실행하여 통계 계산
-- 필요 없는 테이블까지 JOIN
+### Problem 2: 비효율적인 GROUP BY
+**학습 목표:**
+- 불필요한 테이블 JOIN 제거
+- 서브쿼리 대신 집계 함수 활용
+- COUNT DISTINCT 사용
 
-**최적화 방법:**
-- LEFT JOIN을 INNER JOIN으로 변경
-- 서브쿼리 대신 GROUP BY의 집계 함수 활용
-- 불필요한 JOIN 제거
+**난이도:** ⭐⭐⭐⭐
 
 ### Problem 3: 복잡한 중첩 서브쿼리
-
-**비효율적인 쿼리 예시:**
-- 깊이 중첩된 서브쿼리
-- 각 제품마다 여러 번 서브쿼리 실행
-- 불필요한 DISTINCT 연산
-
-**최적화 방법:**
-- CTE로 서브쿼리를 하나의 집계로 통합
+**학습 목표:**
+- 중첩 서브쿼리를 CTE로 변환
 - 서브쿼리를 JOIN으로 변환
-- 한 번의 GROUP BY로 모든 통계 계산
+- 한 번의 집계로 모든 통계 계산
+
+**난이도:** ⭐⭐⭐⭐⭐
 
 ### Problem 4: 인덱스 최적화
+**학습 목표:**
+- 적절한 인덱스 설계
+- 인덱스 생성 및 확인
+- 성능 개선 효과 측정
 
-**생성할 인덱스:**
-- `orders(customer_id)`: 고객별 주문 조회
-- `orders(order_status)`: 주문 상태별 필터링
-- `orders(order_date)`: 날짜 범위 검색
-- `order_items(order_id)`: 주문 상세 조인
-- `order_items(product_id)`: 제품별 판매 분석
-- `customers(region_id)`: 지역별 고객 조회
-- `products(category_id)`: 카테고리별 제품 조회
+**난이도:** ⭐⭐
 
-### Problem 5: 잘못된 OUTER JOIN 사용
+### Problem 5: 잘못된 OUTER JOIN
+**학습 목표:**
+- LEFT JOIN vs INNER JOIN 차이
+- WHERE 절이 OUTER JOIN을 무효화하는 경우
+- 적절한 JOIN 타입 선택
 
-**비효율적인 쿼리 예시:**
-- WHERE 절에서 필터링하는 테이블에 LEFT JOIN 사용
-- OUTER JOIN의 의미가 WHERE 절에 의해 무효화됨
-
-**최적화 방법:**
-- WHERE 절 조건이 있는 테이블은 INNER JOIN 사용
-- NULL 허용이 필요한 경우만 LEFT JOIN 사용
+**난이도:** ⭐⭐⭐
 
 ## 학습 목표
 
@@ -191,110 +214,52 @@ python problem_1_duplicate_joins.py
 5. ✅ **집계 최적화**: GROUP BY와 윈도우 함수의 효율적 사용
 6. ✅ **성능 측정**: 쿼리 실행 시간 비교 및 분석
 
-## 파일 구조
-
-```
-sql101/
-├── README.md                          # 프로젝트 문서
-├── README_CHATBOT.md                  # 챗봇 사용 가이드
-├── pyproject.toml                     # uv 프로젝트 설정
-├── .python-version                    # Python 버전 (3.11)
-├── requirements.txt                   # 의존성 목록 (레거시)
-│
-├── setup_database.py                  # 샘플 DB 생성 스크립트
-├── sql_utils.py                       # 공통 유틸리티 함수
-│
-├── app.py                             # 🆕 Gradio 챗봇 애플리케이션
-├── sql_grader_agent.py                # 🆕 SQL 채점 에이전트
-│
-├── problem_1_duplicate_joins.py       # Problem 1: 중복 JOIN
-├── problem_2_inefficient_groupby.py   # Problem 2: 비효율적 GROUP BY
-├── problem_3_nested_subqueries.py     # Problem 3: 중첩 서브쿼리
-├── problem_4_create_indexes.py        # Problem 4: 인덱스 생성
-├── problem_5_outer_join.py            # Problem 5: 잘못된 OUTER JOIN
-│
-├── sql_optimization_tutorial.py       # (레거시) 전체 튜토리얼
-├── run_tutorial_demo.py               # (레거시) 데모 실행 스크립트
-│
-├── .venv/                             # 가상환경 (uv sync 후 생성)
-└── ecommerce.db                       # 생성된 SQLite 데이터베이스
-```
-
-### 파일 설명
-
-- **app.py**: Gradio 기반 대화형 학습 챗봇
-  - 문제 출제 및 쿼리 제출 인터페이스
-  - 실시간 채점 및 피드백
-  - 웹 브라우저에서 실행
-
-- **sql_grader_agent.py**: SQL 쿼리 채점 에이전트
-  - 쿼리 실행 및 결과 검증
-  - 성능 분석 및 점수 계산
-  - 피드백 생성
-
-- **sql_utils.py**: 모든 스크립트에서 공통으로 사용하는 유틸리티 함수
-  - 데이터베이스 연결 생성
-  - 쿼리 실행 시간 측정
-  - 쿼리 실행 및 분석 결과 출력
-
-- **problem_N_*.py**: 각각 독립적으로 실행 가능한 Problem 스크립트
-  - 데이터베이스만 있으면 어디서든 실행 가능
-  - 비효율적 쿼리와 최적화 쿼리를 비교
-  - 각 Problem의 학습 포인트 포함
-
-## 추가 학습 자료
-
-### 권장 실습 순서
+## 권장 학습 순서
 
 1. 먼저 비효율적인 쿼리를 실행하고 실행 시간 확인
 2. `EXPLAIN QUERY PLAN` 결과 분석
-3. 최적화된 쿼리와 비교
+3. 챗봇 또는 스크립트로 최적화 학습
 4. 인덱스 생성 전후 성능 차이 확인
-
-### 직접 해보기
-
-튜토리얼의 각 문제를 보고 최적화 방법을 스스로 생각해본 후, 제공된 해답과 비교해보세요.
-
-## 실행 결과 예시
-
-```
-🔍 ❌ 비효율적 쿼리 - 중복 JOIN & 중복 서브쿼리
-================================================================================
-
-📝 SQL Query:
-SELECT * FROM orders o
-LEFT JOIN customers c1 ON o.customer_id = c1.customer_id
-LEFT JOIN customers c2 ON o.customer_id = c2.customer_id
-...
-
-📊 Query Plan:
-  SCAN o
-  SEARCH c1 USING INDEX ...
-  SEARCH c2 USING INDEX ...
-
-⏱️  실행 시간: 245.32ms
-✅ 결과: 150개 행
-
----
-
-🔍 ✅ 최적화된 쿼리 - 중복 제거 & CTE 사용
-================================================================================
-
-⏱️  실행 시간: 12.45ms  👈 20배 빠름!
-✅ 결과: 150개 행
-```
 
 ## 기술 스택
 
-- Python 3.8+ (권장: 3.11)
-- SQLite3 (Python 내장)
-- uv (의존성 관리 및 Python 버전 관리)
+- **Python**: 3.8+ (권장: 3.11)
+- **SQLite3**: Python 내장
+- **Gradio**: 5.x (챗봇 UI)
+- **uv**: 의존성 관리 및 Python 버전 관리
 
 ## 참고 사항
 
 - 실습용으로 SQLite를 사용하지만, 개념은 MySQL, PostgreSQL 등에도 동일하게 적용됩니다
 - 실제 프로덕션 환경에서는 데이터베이스 종류에 따라 최적화 방법이 다를 수 있습니다
 - 쿼리 최적화는 데이터 규모와 분포에 따라 결과가 달라질 수 있습니다
+
+## 문제 해결
+
+### 데이터베이스 파일이 없는 경우
+
+```bash
+uv run python data/setup_database.py
+```
+
+### Import 오류
+
+```bash
+# 프로젝트 루트에서 실행해야 합니다
+cd /path/to/sql101
+uv run python problems/problem_1_duplicate_joins.py
+```
+
+### 포트 충돌 (챗봇)
+
+`chatbot/app.py` 파일 수정:
+```python
+demo.launch(
+    server_name="0.0.0.0",
+    server_port=7861,  # 다른 포트로 변경
+    share=False
+)
+```
 
 ## 라이선스
 

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """
+
 Problem 3: 복잡한 중첩 서브쿼리와 잘못된 JOIN 순서
 
 문제점:
@@ -13,7 +14,11 @@ Problem 3: 복잡한 중첩 서브쿼리와 잘못된 JOIN 순서
 - 불필요한 DISTINCT 제거
 """
 
-from sql_utils import get_connection, execute_and_analyze, print_header, wait_for_input
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
+from utils.sql_utils import get_connection, execute_and_analyze, print_header, wait_for_input
 
 
 def inefficient_query(conn):
@@ -101,7 +106,7 @@ def optimized_query(conn):
 def main():
     print_header("Problem 3: 복잡한 중첩 서브쿼리와 잘못된 JOIN 순서")
 
-    conn = get_connection()
+    conn = get_connection("data/ecommerce.db")
 
     try:
         # 비효율적인 쿼리 실행

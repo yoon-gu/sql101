@@ -3,8 +3,15 @@ SQL Query Optimization Chatbot with Gradio
 LangGraph 기반 SQL 쿼리 최적화 챗봇
 """
 
+import sys
+from pathlib import Path
+
+# Add parent directory to path for imports
+parent_dir = Path(__file__).parent.parent
+sys.path.insert(0, str(parent_dir))
+
 import gradio as gr
-from sql_grader_agent import SQLGraderAgent, SQLProblem
+from chatbot.sql_grader_agent import SQLGraderAgent, SQLProblem
 
 
 class SQLChatbot:

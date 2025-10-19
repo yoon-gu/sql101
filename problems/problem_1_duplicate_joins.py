@@ -13,7 +13,11 @@ Problem 1: 불필요한 JOIN과 중복 서브쿼리
 - 필요한 컬럼만 SELECT
 """
 
-from sql_utils import get_connection, execute_and_analyze, print_header, wait_for_input
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
+from utils.sql_utils import get_connection, execute_and_analyze, print_header, wait_for_input
 
 
 def inefficient_query(conn):
@@ -79,7 +83,7 @@ def optimized_query(conn):
 def main():
     print_header("Problem 1: 불필요한 JOIN과 중복 서브쿼리")
 
-    conn = get_connection()
+    conn = get_connection("data/ecommerce.db")
 
     try:
         # 비효율적인 쿼리 실행
