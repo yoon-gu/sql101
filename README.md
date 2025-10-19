@@ -69,12 +69,34 @@ python setup_database.py
 
 ### 3. 최적화 튜토리얼 실행
 
-```bash
-# 방법 1: uv run 사용 (권장)
-uv run python sql_optimization_tutorial.py
+각 Problem을 독립적으로 실행할 수 있습니다:
 
-# 방법 2: 가상환경 활성화 후 실행
-python sql_optimization_tutorial.py
+```bash
+# Problem 1: 불필요한 JOIN과 중복 서브쿼리
+uv run python problem_1_duplicate_joins.py
+
+# Problem 2: 비효율적인 GROUP BY와 다중 LEFT JOIN
+uv run python problem_2_inefficient_groupby.py
+
+# Problem 3: 복잡한 중첩 서브쿼리와 잘못된 JOIN 순서
+uv run python problem_3_nested_subqueries.py
+
+# Problem 4: 인덱스 생성으로 성능 최적화
+uv run python problem_4_create_indexes.py
+
+# Problem 5: 잘못된 OUTER JOIN 사용
+uv run python problem_5_outer_join.py
+
+# (선택) 전체 튜토리얼 한번에 실행
+uv run python sql_optimization_tutorial.py
+```
+
+또는 가상환경 활성화 후 실행:
+
+```bash
+source .venv/bin/activate  # Windows: .venv\Scripts\activate
+python problem_1_duplicate_joins.py
+# ... 나머지 문제들도 동일하게 실행
 ```
 
 ## 실습 구성
@@ -151,15 +173,38 @@ python sql_optimization_tutorial.py
 
 ```
 sql101/
-├── README.md                      # 이 파일
-├── pyproject.toml                 # uv 프로젝트 설정
-├── .python-version                # Python 버전 (3.11)
-├── requirements.txt               # 의존성 목록 (레거시)
-├── setup_database.py              # 샘플 DB 생성 스크립트
-├── sql_optimization_tutorial.py   # 메인 튜토리얼
-├── .venv/                         # 가상환경 (uv sync 후 생성)
-└── ecommerce.db                   # 생성된 SQLite 데이터베이스
+├── README.md                          # 프로젝트 문서
+├── pyproject.toml                     # uv 프로젝트 설정
+├── .python-version                    # Python 버전 (3.11)
+├── requirements.txt                   # 의존성 목록 (레거시)
+│
+├── setup_database.py                  # 샘플 DB 생성 스크립트
+├── sql_utils.py                       # 공통 유틸리티 함수
+│
+├── problem_1_duplicate_joins.py       # Problem 1: 중복 JOIN
+├── problem_2_inefficient_groupby.py   # Problem 2: 비효율적 GROUP BY
+├── problem_3_nested_subqueries.py     # Problem 3: 중첩 서브쿼리
+├── problem_4_create_indexes.py        # Problem 4: 인덱스 생성
+├── problem_5_outer_join.py            # Problem 5: 잘못된 OUTER JOIN
+│
+├── sql_optimization_tutorial.py       # (레거시) 전체 튜토리얼
+├── run_tutorial_demo.py               # (레거시) 데모 실행 스크립트
+│
+├── .venv/                             # 가상환경 (uv sync 후 생성)
+└── ecommerce.db                       # 생성된 SQLite 데이터베이스
 ```
+
+### 파일 설명
+
+- **sql_utils.py**: 모든 Problem 스크립트에서 공통으로 사용하는 유틸리티 함수
+  - 데이터베이스 연결 생성
+  - 쿼리 실행 시간 측정
+  - 쿼리 실행 및 분석 결과 출력
+
+- **problem_N_*.py**: 각각 독립적으로 실행 가능한 Problem 스크립트
+  - 데이터베이스만 있으면 어디서든 실행 가능
+  - 비효율적 쿼리와 최적화 쿼리를 비교
+  - 각 Problem의 학습 포인트 포함
 
 ## 추가 학습 자료
 
