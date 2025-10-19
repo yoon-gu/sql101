@@ -15,6 +15,28 @@
 5. **GROUP BY와 JOIN의 비효율적 조합**: 데이터 중복 집계
 6. **OUTER JOIN의 잘못된 사용**: LEFT JOIN이 필요 없는 상황에서 사용
 
+## 🆕 대화형 학습 챗봇
+
+Gradio 기반 대화형 SQL 쿼리 최적화 챗봇을 사용하여 실시간 피드백을 받으며 학습할 수 있습니다!
+
+```bash
+# Gradio 챗봇 실행
+uv run python app.py
+
+# 브라우저에서 http://localhost:7860 접속
+```
+
+**챗봇 기능:**
+- 📝 문제 출제 및 과제 제공
+- ✅ 제출한 쿼리 자동 채점
+- 📊 성능 분석 및 비교
+- 💡 실시간 피드백 및 개선 팁
+- 🎯 정답 및 해설 제공
+
+👉 자세한 사용법은 [README_CHATBOT.md](README_CHATBOT.md)를 참고하세요!
+
+---
+
 ## 설치 및 실행
 
 ### 0. 사전 준비
@@ -174,12 +196,16 @@ python problem_1_duplicate_joins.py
 ```
 sql101/
 ├── README.md                          # 프로젝트 문서
+├── README_CHATBOT.md                  # 챗봇 사용 가이드
 ├── pyproject.toml                     # uv 프로젝트 설정
 ├── .python-version                    # Python 버전 (3.11)
 ├── requirements.txt                   # 의존성 목록 (레거시)
 │
 ├── setup_database.py                  # 샘플 DB 생성 스크립트
 ├── sql_utils.py                       # 공통 유틸리티 함수
+│
+├── app.py                             # 🆕 Gradio 챗봇 애플리케이션
+├── sql_grader_agent.py                # 🆕 SQL 채점 에이전트
 │
 ├── problem_1_duplicate_joins.py       # Problem 1: 중복 JOIN
 ├── problem_2_inefficient_groupby.py   # Problem 2: 비효율적 GROUP BY
@@ -196,7 +222,17 @@ sql101/
 
 ### 파일 설명
 
-- **sql_utils.py**: 모든 Problem 스크립트에서 공통으로 사용하는 유틸리티 함수
+- **app.py**: Gradio 기반 대화형 학습 챗봇
+  - 문제 출제 및 쿼리 제출 인터페이스
+  - 실시간 채점 및 피드백
+  - 웹 브라우저에서 실행
+
+- **sql_grader_agent.py**: SQL 쿼리 채점 에이전트
+  - 쿼리 실행 및 결과 검증
+  - 성능 분석 및 점수 계산
+  - 피드백 생성
+
+- **sql_utils.py**: 모든 스크립트에서 공통으로 사용하는 유틸리티 함수
   - 데이터베이스 연결 생성
   - 쿼리 실행 시간 측정
   - 쿼리 실행 및 분석 결과 출력

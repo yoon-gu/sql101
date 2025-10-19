@@ -7,7 +7,9 @@ requires-python = ">=3.8"
 authors = [
     { name = "SQL101 Tutorial" }
 ]
-dependencies = []
+dependencies = [
+    "gradio>=4.0.0",
+]
 
 [tool.uv]
 dev-dependencies = []
